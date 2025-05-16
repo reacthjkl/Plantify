@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    card:cardCornerRadius="8dp"
+    card:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <!-- Platzhalter-Bild -->
+        <ImageView
+            android:id="@+id/ivPlantImage"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:contentDescription="Pflanzenbild"/>
+
+        <!-- Pflanzentext -->
+        <TextView
+            android:id="@+id/tvPlantName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:text="Pflanzenname"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
