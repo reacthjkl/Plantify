@@ -1,4 +1,5 @@
 package com.example.plantify;
 
-public class OnPlantListChangedListener {
+public interface OnPlantListChangedListener {
+    void onPlantListChanged(boolean isEmpty);
 }
