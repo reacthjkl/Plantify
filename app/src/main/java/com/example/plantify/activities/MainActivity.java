@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plantify.helpers.PlantAdapter;
+import com.example.plantify.adapters.PlantAdapter;
 import com.example.plantify.R;
 import com.example.plantify.interfaces.OnPlantListChangedListener;
 import com.example.plantify.models.Plant;

@@ -1,4 +1,4 @@
-package com.example.plantify.helpers;
+package com.example.plantify.adapters;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;

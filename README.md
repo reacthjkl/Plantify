@@ -1,34 +1,64 @@
-# Plantify – Android App (Dummy-Implementation)
+# 🌱 Plantify
 
-Dieses Repository enthält das Grundgerüst der „Plantify“-App mit allen Activities und der Navigation zwischen ihnen. Es handelt sich um eine **Dummy-Implementation** ohne echte Geschäftslogik, die nur XML-Templates, Java-Activity-Klassen und das AndroidManifest enthält.
+**Plantify** is an Android application for managing and tracking the care of your indoor plants. Easily add plants, keep track of watering schedules, and get helpful facts to support plant care routines.
 
-## Projektübersicht
+---
 
-- **MainActivity**: Startseite mit RecyclerView von Dummy-Pflanzen und FloatingActionButton zum Hinzufügen
-- **NewPlantActivity**: Seite „Neue Pflanze erfassen“ mit Suchfeld, Ergebnis-Liste und Button zur manuellen Eingabe
-- **ManualEntryActivity**: Formularseite zur manuellen Eingabe von Art, Bild, Name, Standort und Gieß-Intervall
+## Features
 
-Alle weiteren Komponenten (Adapter, Item-Layouts, Manifest) sind auf Dummy-Daten ausgelegt, um Navigation und UI-Aufbau zu demonstrieren.
+- **Add and manage plants** manually or through a searchable list
+- **Track watering frequency** (daily, weekly, monthly, etc.)
+- **Attach plant photos** from gallery or camera
+- **Suggestions** with predefined plant data
+- **Visual reminders** for when a plant needs watering
+- **Fun facts of the day** from a curated collection
+- **Delete and update entries**, including associated image cleanup
+- **Offline-first**: all data is stored locally using JSON-based persistence
 
-## Inhalt der Abgabe
 
-Aufgrund des Upload-Limits von 20 MB wurde **nicht** das komplette Android-Studio-Projekt archiviert, sondern nur folgende Dateien:
+## Technologies Used
 
-```
-/AndroidManifest.xml
-/res/layout/activity_main.xml
-/res/layout/item_plant.xml
-/res/layout/activity_new_plant.xml
-/res/layout/activity_manual_entry.xml
+- Java
+- Android SDK
+- AndroidX libraries
+- Gson (for JSON parsing)
+- FileProvider
+- ConstraintLayout
+- Material UI
 
-/java/com/example/plantify/MainActivity.java
-/java/com/example/plantify/NewPlantActivity.java
-/java/com/example/plantify/ManualEntryActivity.java
-/java/com/example/plantify/PlantAdapter.java
-```
+## Project Structure
 
-## Hinweise
+- `activities/` – Contains all the Android activities (e.g., `MainActivity`, `ManualEntryActivity`, `PlantDetailActivity`).
+- `adapters/` – RecyclerView adapters used for displaying plant data.
+- `helpers/` – Utility/helper classes (e.g., for file handling).
+- `interfaces/` – Interfaces for callbacks and communication between components.
+- `models/` – Data models like `Plant` and `SearchPlant`.
+- `persistance/` – Logic for saving and loading data (e.g., from JSON or internal storage).
+- `assets/` – Contains static data files like `facts.json` and `search_plants.json`.
+- `res/drawable/` – Image resources such as icons and placeholders.
+- `res/layout/` – XML layout files for each activity and item view.
 
-- **Dummy-Daten**: Alle Daten (z.B. Pflanzennamen) sind Platzhalter.
-- **Navigation**: Intents verknüpfen die drei Activities.
-- **Erweiterung**: Für echte Implementierung müssen Datenquellen, Bild-Picker, Persistenz (Room/SharedPreferences) etc. ergänzt werden.
+## Screenshots
+
+!["Screenshot 1](./screenshots/1.jpg)
+!["Screenshot 2](./screenshots/2.jpg)
+!["Screenshot 3](./screenshots/3.jpg)
+!["Screenshot 4](./screenshots/4.jpg)
+
+## Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/reacthjkl/Plantify.git
+
+Open the project in Android Studio
+
+Build & Run on an emulator or device (API 26+ recommended)
+
+## Future
+
+- Plants grouped by location (e.g., sleeping room, bath, kitchen, balcony, garden).
+- Weather integration to check rainfall and notify if garden plants were already watered by rain.
+- Add notifications to remind users to water their plants.
+- Localization (multi-language support).
+
