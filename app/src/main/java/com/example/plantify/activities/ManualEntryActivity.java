@@ -61,16 +61,24 @@ public class ManualEntryActivity extends AppCompatActivity {
         Button btnChooseImage = findViewById(R.id.btnChooseImage);
         Button btnSave = findViewById(R.id.btnSave);
 
-        String[] freqs = { "täglich", "1× pro Woche", "2× pro Monat" };
+        String[] freqs = {
+                getString(R.string.daily),
+                getString(R.string.one_time_per_week),
+                getString(R.string.two_times_per_month),
+        };
+
         spinnerFreq.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, freqs));
 
         ivPreview.setImageResource(R.drawable.ic_placeholder);
 
         btnChooseImage.setOnClickListener(v -> {
-            String[] options = {"Foto aufnehmen", "Aus Galerie wählen"};
+            String[] options = {
+                    getString(R.string.take_photo),
+                    getString(R.string.choose_from_gallery)
+            };
             new AlertDialog.Builder(this)
-                    .setTitle("Bild auswählen")
+                    .setTitle(R.string.choose_from_gallery)
                     .setItems(options, (dialog, which) -> {
                         if (which == 0) {
                             openCamera();
@@ -90,7 +98,7 @@ public class ManualEntryActivity extends AppCompatActivity {
                 String imagePath = selectedImageUri != null ? selectedImageUri.getPath() : "";
 
                 if (plantName.isEmpty()) {
-                    Toast.makeText(ManualEntryActivity.this, "Bitte gib einen Namen ein", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManualEntryActivity.this, getString(R.string.please_enter_name), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -102,7 +110,7 @@ public class ManualEntryActivity extends AppCompatActivity {
                 plants.add(newPlant);
                 PlantStorage.savePlants(ManualEntryActivity.this, plants);
 
-                Toast.makeText(ManualEntryActivity.this, "Pflanze gespeichert", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ManualEntryActivity.this, getString(R.string.plant_saved), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ManualEntryActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);

@@ -25,21 +25,21 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#4CAF50"
             android:textColor="#FFFFFF"
-            android:text="Bild auswählen"/>
+            android:text="@string/bild_ausw_hlen"/>
 
         <!-- Name -->
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"/>
+            android:hint="@string/name"/>
 
         <!-- Standort -->
         <EditText
             android:id="@+id/etLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Wo steht Ihre Pflanze?"/>
+            android:hint="@string/wo_steht_ihre_pflanze"/>
 
         <!-- Gieß-Intervall -->
         <Spinner
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#4CAF50"
             android:textColor="#FFFFFF"
-            android:text="Speichern"/>
+            android:text="@string/speichern"/>
 
     </LinearLayout>
 </ScrollView>

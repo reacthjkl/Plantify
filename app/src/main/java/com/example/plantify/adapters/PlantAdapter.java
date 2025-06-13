@@ -45,9 +45,9 @@ import java.util.concurrent.TimeUnit;
  * - Notifying a listener when the plant list changes (e.g., becomes empty after deletion).
  */
 public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHolder> {
-    private Context context;
-    private List<Plant> plantList;
-    private OnPlantListChangedListener listener;
+    private final Context context;
+    private final List<Plant> plantList;
+    private final OnPlantListChangedListener listener;
 
     public PlantAdapter(Context context, List<Plant> plantList, OnPlantListChangedListener listener) {
         this.context = context;
@@ -108,7 +108,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                 showWateringWarning(holder);
             } else {
                 // on time
-                String relativeTime = (daysSinceWatered == 0) ? "Heute" : daysSinceWatered + " Tage her";
+                String relativeTime = (daysSinceWatered == 0) ? context.getString(R.string.today) : daysSinceWatered + " " + context.getString(R.string.days_ago);
                 holder.tvLastWatered.setText(relativeTime);
                 holder.ivWaterIcon.setImageResource(R.drawable.ic_water_can);
                 holder.tvLastWatered.setTextColor(context.getResources().getColor(android.R.color.darker_gray));
@@ -117,7 +117,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
     }
 
     private void showWateringWarning(PlantViewHolder holder) {
-        holder.tvLastWatered.setText("Gießen");
+        holder.tvLastWatered.setText(context.getString(R.string.to_water));
         holder.ivWaterIcon.setImageResource(R.drawable.ic_warning);
         holder.tvLastWatered.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
     }
@@ -130,14 +130,11 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
 
         frequency = frequency.toLowerCase();
 
-        if (frequency.contains("täglich")) return 1;
-        if (frequency.contains("alle 2 tage")) return 2;
-        if (frequency.contains("alle 3 tage")) return 3;
-        if (frequency.contains("1× pro woche")) return 7;
-        if (frequency.contains("2× pro woche")) return 3;
-        if (frequency.contains("alle 2 wochen")) return 14;
-        if (frequency.contains("2× pro monat")) return 15;
-        if (frequency.contains("1× im monat")) return 30;
+        //TODO: fix internationalization by using integers for frequency instead of strings
+        if (frequency.toLowerCase().contains("täglich") || frequency.toLowerCase().contains("daily")) return 1;
+        if (frequency.toLowerCase().contains("1× pro woche") || frequency.toLowerCase().contains("1× per week")) return 7;
+        if (frequency.toLowerCase().contains("2× pro woche") || frequency.toLowerCase().contains("2x per week")) return 3;
+        if (frequency.toLowerCase().contains("2× pro monat") || frequency.toLowerCase().contains("2x per month")) return 15;
 
         return -1;
     }
@@ -149,9 +146,9 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
         popupMenu.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_delete) {
                 new AlertDialog.Builder(context)
-                        .setTitle("Pflanze löschen")
-                        .setMessage("Möchtest du \"" + plant.getName() + "\" wirklich löschen?")
-                        .setPositiveButton("Ja", (dialog, which) -> {
+                        .setTitle(context.getString(R.string.delete_plant))
+                        .setMessage(context.getString(R.string.realy_delete_plant))
+                        .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
                             // Delete image
                             if (plant.getImagePath() != null && !plant.getImagePath().isEmpty()) {
                                 File img = new File(plant.getImagePath());
@@ -173,9 +170,9 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                                 listener.onPlantListChanged(plantList.isEmpty());
                             }
 
-                            Toast.makeText(context, "Pflanze gelöscht", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.plant_deleted), Toast.LENGTH_SHORT).show();
                         })
-                        .setNegativeButton("Abbrechen", null)
+                        .setNegativeButton(context.getString(R.string.cancel), null)
                         .show();
                 return true;
 
@@ -209,14 +206,14 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                     PlantStorage.savePlants(context, plantList);
                     notifyItemChanged(position);
 
-                    Toast.makeText(context, "Gießdatum aktualisiert", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.watering_date_updated), Toast.LENGTH_SHORT).show();
                 },
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
         );
 
-        datePicker.setTitle("Wann wurde die Pflanze gegossen?");
+        datePicker.setTitle(context.getString(R.string.when_watered));
         datePicker.getDatePicker().setMaxDate(System.currentTimeMillis()); // forbid future
         datePicker.show();
     }

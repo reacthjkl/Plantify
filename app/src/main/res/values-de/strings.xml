@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Plantify</string>
+    <string name="hallo_illia">Hallo, Illia</string>
+    <string name="fact_of_the_day">Schon gewusst?</string>
+    <string name="default_fact_of_the_day">Pflanzen produzieren Sauerstoff – auch nachts manche!</string>
+    <string name="n_chster_fakt">Nächster Fakt</string>
+    <string name="keine_pflanzen_vorhanden">Keine Pflanzen vorhanden</string>
+    <string name="neue_pflanze">Neue Pflanze</string>
+    <string name="bild_ausw_hlen">Bild auswählen</string>
+    <string name="name">Name</string>
+    <string name="wo_steht_ihre_pflanze">Wo steht Ihre Pflanze?</string>
+    <string name="speichern">Speichern</string>
+    <string name="suche">Suche</string>
+    <string name="manuelle_eingabe">Manuelle Eingabe</string>
+    <string name="bild_ndern">Bild ändern</string>
+    <string name="standort">Standort</string>
+    <string name="l_schen">Löschen</string>
+    <string name="plant_name">Pflanzenname</string>
+    <string name="_3_days_ago">Vor 3 Tagen</string>
+    <string name="take_photo">Bild aufnehmen</string>
+    <string name="choose_from_gallery">Aus Galerie wählen</string>
+    <string name="daily">täglich</string>
+    <string name="one_time_per_week">1× pro Woche</string>
+    <string name="two_times_per_month">2× pro Monat</string>
+    <string name="please_enter_name">Bitte gib einen Namen ein</string>
+    <string name="plant_saved">Pflanze gespeichert</string>
+    <string name="name_cannot_be_empty">Name darf nicht leer sein</string>
+    <string name="plant_updated">Pflanze aktualisiert</string>
+    <string name="delete_plant">Pflanze löschen</string>
+    <string name="realy_delete_plant">Möchtest du diese Pflanze wirklich löschen?</string>
+    <string name="could_not_delete_image">Bild konnte nicht gelöscht werden</string>
+    <string name="plant_deleted">Pflanze gelöscht</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="today">Heute</string>
+    <string name="days_ago">Tage her</string>
+    <string name="to_water">Gießen</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="watering_date_updated">Gießdatum aktualisiert</string>
+    <string name="when_watered">Wann wurde die Pflanze gegossen?</string>
+</resources>

@@ -68,7 +68,11 @@ public class PlantDetailActivity extends AppCompatActivity {
         Button btnChangeImage = findViewById(R.id.btnChangeImage);
 
         // Init spinner
-        String[] freqs = {"täglich", "1× pro Woche", "2× pro Monat"};
+        String[] freqs = {
+                getString(R.string.daily),
+                getString(R.string.one_time_per_week),
+                getString(R.string.two_times_per_month),
+        };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, freqs);
         spinnerFreq.setAdapter(adapter);
 
@@ -94,9 +98,12 @@ public class PlantDetailActivity extends AppCompatActivity {
         }
 
         btnChangeImage.setOnClickListener(v -> {
-            String[] options = {"Foto aufnehmen", "Aus Galerie wählen"};
+            String[] options = {
+                    getString(R.string.take_photo),
+                    getString(R.string.choose_from_gallery)
+            };
             new AlertDialog.Builder(this)
-                    .setTitle("Bild auswählen")
+                    .setTitle(getString(R.string.choose_from_gallery))
                     .setItems(options, (dialog, which) -> {
                         if (which == 0) {
                             // Camera
@@ -117,7 +124,7 @@ public class PlantDetailActivity extends AppCompatActivity {
             // Update plant object
             String newName = etName.getText().toString().trim();
             if (newName.isEmpty()) {
-                Toast.makeText(this, "Name darf nicht leer sein", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.name_cannot_be_empty), Toast.LENGTH_SHORT).show();
                 return;
             }
             plant = new Plant(plant.getId(), newName, newImagePath, newLocation, newFreq);
@@ -136,14 +143,14 @@ public class PlantDetailActivity extends AppCompatActivity {
 
             PlantStorage.savePlants(this, plants);
 
-            Toast.makeText(this, "Pflanze aktualisiert", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.plant_updated), Toast.LENGTH_SHORT).show();
             finish();
         });
 
         btnDelete.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
-                    .setTitle("Pflanze löschen")
-                    .setMessage("Möchtest du diese Pflanze wirklich löschen?")
+                    .setTitle(getString(R.string.delete_plant))
+                    .setMessage(getString(R.string.realy_delete_plant))
                     .setPositiveButton("Ja", (dialog, which) -> {
                         // 1. Delete image file if it exists
                         if (plant.getImagePath() != null && !plant.getImagePath().isEmpty()) {
@@ -151,7 +158,7 @@ public class PlantDetailActivity extends AppCompatActivity {
                             if (imageFile.exists()) {
                                 boolean deleted = imageFile.delete();
                                 if (!deleted) {
-                                    Toast.makeText(this, "Bild konnte nicht gelöscht werden", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, getString(R.string.could_not_delete_image), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -165,10 +172,10 @@ public class PlantDetailActivity extends AppCompatActivity {
                             }
                         }
                         PlantStorage.savePlants(this, plants);
-                        Toast.makeText(this, "Pflanze gelöscht", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.plant_deleted), Toast.LENGTH_SHORT).show();
                         finish();
                     })
-                    .setNegativeButton("Abbrechen", null)
+                    .setNegativeButton(getString(R.string.cancel), null)
                     .show();
         });
     }

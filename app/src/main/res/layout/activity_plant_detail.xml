@@ -22,19 +22,19 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#4CAF50"
             android:textColor="#FFFFFF"
-            android:text="Bild ändern" />
+            android:text="@string/bild_ndern" />
 
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="@string/name" />
 
         <EditText
             android:id="@+id/etLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Standort" />
+            android:hint="@string/standort" />
 
         <Spinner
             android:id="@+id/spinnerFreq"
@@ -48,14 +48,14 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#4CAF50"
             android:textColor="#FFFFFF"
-            android:text="Speichern"
+            android:text="@string/speichern"
             android:layout_marginTop="16dp" />
 
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Löschen"
+            android:text="@string/l_schen"
             android:layout_marginTop="8dp"
             android:backgroundTint="@android:color/holo_red_light"
             android:textColor="@android:color/white"/>

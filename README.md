@@ -57,8 +57,6 @@ Build & Run on an emulator or device (API 26+ recommended)
 
 ## Future
 
-- Plants grouped by location (e.g., sleeping room, bath, kitchen, balcony, garden).
-- Weather integration to check rainfall and notify if garden plants were already watered by rain.
 - Add notifications to remind users to water their plants.
-- Localization (multi-language support).
+- Add internationalization for assets.
 

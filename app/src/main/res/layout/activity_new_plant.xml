@@ -14,7 +14,7 @@
         android:layout_height="80dp"
         android:textSize="24sp"
         android:padding="12dp"
-        android:hint="Suche"/>
+        android:hint="@string/suche"/>
 
     <!-- Ergebnis-Liste -->
     <ListView
@@ -30,6 +30,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#4CAF50"
         android:textColor="#FFFFFF"
-        android:text="Manuelle Eingabe"/>
+        android:text="@string/manuelle_eingabe"/>
 
 </LinearLayout>
