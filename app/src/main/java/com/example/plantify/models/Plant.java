@@ -1,7 +1,18 @@
-package com.example.plantify;
+package com.example.plantify.models;
 
 import java.io.Serializable;
 import java.util.UUID;
+
+/*
+ * Author: Illia Soloviov
+ *
+ * The Plant class represents a single plant entry in the Plantify app.
+ * It holds key information such as a unique ID (UUID), plant name, image path, location,
+ * watering frequency, and the timestamp of the last watering.
+ * The class provides constructors for creating new plant instances with or without a predefined ID.
+ * It implements Serializable to support easy data storage and transfer.
+ * An empty constructor is included for compatibility with JSON serialization tools like Gson.
+ */
 
 public class Plant implements Serializable {
     private String id; // UUID

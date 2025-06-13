@@ -1,42 +1,49 @@
-package com.example.plantify;
+package com.example.plantify.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.plantify.R;
+import com.example.plantify.models.Plant;
+import com.example.plantify.models.SearchPlant;
+import com.example.plantify.persistance.PlantData;
+import com.example.plantify.persistance.PlantStorage;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/*
+ * Author: Illia Soloviov
+ *
+ * The NewPlantActivity provides an interface for users to quickly add a new plant from a predefined list.
+ * It features a searchable list of plants with predefined watering frequencies.
+ * Users can filter the list via a search field, and selecting a plant automatically adds it to their collection.
+ * Alternatively, users can navigate to a manual entry screen to add a plant with custom details.
+ */
+
 public class NewPlantActivity extends AppCompatActivity {
-    private EditText etSearch;
-    private ListView lvResults;
-    private Button btnManual;
 
     private List<SearchPlant> displayList;
     private ArrayAdapter<SearchPlant> adapter;
-    private List<SearchPlant> allPlants = PlantData.getPredefinedSearchPlants();
+    private List<SearchPlant> allPlants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_plant);
 
-        etSearch = findViewById(R.id.etSearch);
-        lvResults = findViewById(R.id.lvResults);
-        btnManual = findViewById(R.id.btnManual);
+        allPlants = PlantData.getPredefinedSearchPlants(this);
+
+        EditText etSearch = findViewById(R.id.etSearch);
+        ListView lvResults = findViewById(R.id.lvResults);
+        Button btnManual = findViewById(R.id.btnManual);
 
         displayList = new ArrayList<>(allPlants);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displayList);

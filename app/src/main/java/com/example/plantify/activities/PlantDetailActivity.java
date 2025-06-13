@@ -1,4 +1,4 @@
-package com.example.plantify;
+package com.example.plantify.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -10,11 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+
+import com.example.plantify.R;
+import com.example.plantify.models.Plant;
+import com.example.plantify.persistance.PlantStorage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,9 +26,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+/*
+ * Author: Illia Soloviov
+ *
+ * The PlantDetailActivity allows users to view and edit the details of a selected plant.
+ * Users can update the plant’s name, location, watering frequency, and image.
+ * Images can be selected either from the device’s gallery or taken directly using the camera.
+ * The activity also supports deleting the plant, including its associated image file from internal storage.
+ * All changes are saved to persistent storage, and the activity notifies the user accordingly.
+ */
+
 public class PlantDetailActivity extends AppCompatActivity {
 
-    private Button btnDelete;
     private EditText etName;
 
     private EditText etLocation;
@@ -49,7 +61,7 @@ public class PlantDetailActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         spinnerFreq = findViewById(R.id.spinnerFreq);
         ivImage = findViewById(R.id.ivImage);
-        btnDelete = findViewById(R.id.btnDelete);
+        Button btnDelete = findViewById(R.id.btnDelete);
 
         Button btnSave = findViewById(R.id.btnSave);
         Button btnChangeImage = findViewById(R.id.btnChangeImage);

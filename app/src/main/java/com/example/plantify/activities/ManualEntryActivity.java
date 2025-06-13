@@ -1,4 +1,4 @@
-package com.example.plantify;
+package com.example.plantify.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.plantify.R;
+import com.example.plantify.models.Plant;
+import com.example.plantify.persistance.PlantStorage;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,12 +24,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+/*
+ * Author: Illia Soloviov
+ *
+ * The ManualEntryActivity allows users to manually create and save a new plant entry.
+ * Users can enter the plant’s name and location, select a watering frequency from a dropdown,
+ * and optionally pick an image from their device’s gallery.
+ * The selected image is copied to internal storage, and a preview is displayed.
+ * Once saved, the plant is added to the persistent list and the user is redirected to the main screen.
+ */
+
 public class ManualEntryActivity extends AppCompatActivity {
     private Spinner spinnerFreq;
-    private Button btnChooseImage, btnSave;
     private EditText etName, etLocation;
     private Uri selectedImageUri;
-    private ImageView ivPreview;
 
 
     @Override
@@ -37,9 +49,9 @@ public class ManualEntryActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etLocation = findViewById(R.id.etLocation);
         spinnerFreq = findViewById(R.id.spinnerFreq);
-        btnChooseImage = findViewById(R.id.btnChooseImage);
-        btnSave = findViewById(R.id.btnSave);
-        ivPreview = findViewById(R.id.ivPreview);
+        Button btnChooseImage = findViewById(R.id.btnChooseImage);
+        Button btnSave = findViewById(R.id.btnSave);
+        ImageView ivPreview = findViewById(R.id.ivPreview);
 
         String[] freqs = { "täglich", "1× pro Woche", "2× pro Monat" };
         spinnerFreq.setAdapter(new ArrayAdapter<>(this,

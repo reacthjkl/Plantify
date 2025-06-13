@@ -1,4 +1,4 @@
-package com.example.plantify;
+package com.example.plantify.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,16 +10,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.plantify.helpers.PlantAdapter;
+import com.example.plantify.R;
+import com.example.plantify.interfaces.OnPlantListChangedListener;
+import com.example.plantify.models.Plant;
+import com.example.plantify.persistance.PlantData;
+import com.example.plantify.persistance.PlantStorage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+/*
+ * Author: Illia Soloviov
+ *
+ * The purpose of the MainActivity is to serve as the entry point of the Plantify app.
+ * It displays a list of saved plants and allows the user to add new ones via a FloatingActionButton.
+ * Additionally, it shows a "Fact of the Day" section with randomly selected plant-related facts that change on button press.
+ * The activity listens for changes in the plant list and updates the UI accordingly.
+ */
 public class MainActivity extends AppCompatActivity implements OnPlantListChangedListener {
-    private RecyclerView rvPlants;
     private FloatingActionButton fabAdd;
     private List<String> plantFacts;
     private TextView tvFact;
-    private Button btnNextFact;
     private String lastFact = "";
 
     @Override
@@ -28,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements OnPlantListChange
         setContentView(R.layout.activity_main);
         initPlantList();
         initFactOfTheDay();
-
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnPlantListChange
     }
 
     private void initPlantList() {
-        rvPlants = findViewById(R.id.rvPlants);
+        RecyclerView rvPlants = findViewById(R.id.rvPlants);
         fabAdd = findViewById(R.id.fabAdd);
         TextView tvEmptyMessage = findViewById(R.id.tvEmptyMessage);
 
@@ -83,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements OnPlantListChange
 
     private void initFactOfTheDay() {
         tvFact = findViewById(R.id.tvFact);
-        btnNextFact = findViewById(R.id.btnNextFact);
+        Button btnNextFact = findViewById(R.id.btnNextFact);
 
-        plantFacts = PlantData.getFactsOfTheDay();
+        plantFacts = PlantData.getFactsOfTheDay(this);
 
         showRandomFact(); // initial random fact
 
@@ -105,6 +116,4 @@ public class MainActivity extends AppCompatActivity implements OnPlantListChange
         lastFact = randomFact;
         tvFact.setText(randomFact);
     }
-
-
 }

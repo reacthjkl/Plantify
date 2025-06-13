@@ -1,4 +1,4 @@
-package com.example.plantify;
+package com.example.plantify.helpers;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -17,12 +17,32 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.plantify.R;
+import com.example.plantify.activities.PlantDetailActivity;
+import com.example.plantify.interfaces.OnPlantListChangedListener;
+import com.example.plantify.models.Plant;
+import com.example.plantify.persistance.PlantStorage;
+
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-
+/*
+ * Author: Illia Soloviov
+ *
+ * The PlantAdapter is a custom RecyclerView adapter that manages how plant entries are displayed
+ * in the Plantify app. Each plant item shows its name, image, and the time since it was last watered.
+ *
+ * It supports user interactions such as:
+ * - Clicking an item to open detailed plant information.
+ * - Long-pressing an item to open a context menu for deleting the plant or setting the last watered date.
+ *
+ * The adapter also handles:
+ * - Image loading from internal storage with fallbacks.
+ * - Relative time calculation for last watering.
+ * - Notifying a listener when the plant list changes (e.g., becomes empty after deletion).
+ */
 public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHolder> {
     private Context context;
     private List<Plant> plantList;

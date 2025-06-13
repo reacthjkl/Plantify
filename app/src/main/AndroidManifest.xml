@@ -17,10 +17,10 @@
         </provider>
 
         <activity
-            android:name=".PlantDetailActivity"
+            android:name=".activities.PlantDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +29,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewPlantActivity"
+            android:name=".activities.NewPlantActivity"
             android:exported="false" />
         <activity
-            android:name=".ManualEntryActivity"
+            android:name=".activities.ManualEntryActivity"
             android:exported="false" />
     </application>
 
