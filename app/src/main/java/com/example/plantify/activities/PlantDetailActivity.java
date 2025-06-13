@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.example.plantify.R;
+import com.example.plantify.helpers.FileHelper;
 import com.example.plantify.models.Plant;
 import com.example.plantify.persistance.PlantStorage;
 
@@ -124,7 +125,10 @@ public class PlantDetailActivity extends AppCompatActivity {
             // Replace updated plant in list and save
             List<Plant> plants = PlantStorage.loadPlants(this);
             for (int i = 0; i < plants.size(); i++) {
-                if (plants.get(i).getId().equals(plant.getId())) {
+                String currentId = plants.get(i).getId();
+                String targetId = plant.getId();
+
+                if (targetId != null && targetId.equals(currentId)) {
                     plants.set(i, plant);
                     break;
                 }
@@ -179,9 +183,9 @@ public class PlantDetailActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_GALLERY && data != null) {
             Uri sourceUri = data.getData();
-            imageUri = copyToInternalStorage(sourceUri);
+            imageUri = FileHelper.copyToInternalStorage(this, sourceUri);
         } else if (requestCode == REQUEST_CAMERA) {
-            imageUri = copyToInternalStorage(cameraImageUri);
+            imageUri = FileHelper.copyToInternalStorage(this, cameraImageUri);
         }
 
         if (imageUri != null) {
@@ -205,24 +209,4 @@ public class PlantDetailActivity extends AppCompatActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
-
-    private Uri copyToInternalStorage(Uri sourceUri) {
-        try {
-            File destFile = new File(getFilesDir(), System.currentTimeMillis() + "_plant.jpg");
-            try (InputStream in = getContentResolver().openInputStream(sourceUri);
-                 OutputStream out = new FileOutputStream(destFile)) {
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
-            return Uri.fromFile(destFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
 }

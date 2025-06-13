@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,19 +94,52 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
         Long timestamp = plant.getLastWateredTimestamp();
 
         if (timestamp == null) {
-            holder.tvLastWatered.setText("Gießen");
-            holder.ivWaterIcon.setImageResource(R.drawable.ic_warning); // Use exclamation icon
-            holder.tvLastWatered.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+            // no watering yet
+            showWateringWarning(holder);
         } else {
             long now = System.currentTimeMillis();
             long diff = now - timestamp;
-            long days = TimeUnit.MILLISECONDS.toDays(diff);
+            long daysSinceWatered = TimeUnit.MILLISECONDS.toDays(diff);
 
-            String relativeTime = (days == 0) ? "Heute" : days + " Tage her";
-            holder.tvLastWatered.setText(relativeTime);
-            holder.ivWaterIcon.setImageResource(R.drawable.ic_water_can); // Normal water can
-            holder.tvLastWatered.setTextColor(context.getResources().getColor(android.R.color.darker_gray));
+            int recommendedInterval = parseWateringIntervalInDays(plant.getWateringFrequency());
+
+            if (recommendedInterval > 0 && daysSinceWatered >= recommendedInterval) {
+                // overdue
+                showWateringWarning(holder);
+            } else {
+                // on time
+                String relativeTime = (daysSinceWatered == 0) ? "Heute" : daysSinceWatered + " Tage her";
+                holder.tvLastWatered.setText(relativeTime);
+                holder.ivWaterIcon.setImageResource(R.drawable.ic_water_can);
+                holder.tvLastWatered.setTextColor(context.getResources().getColor(android.R.color.darker_gray));
+            }
         }
+    }
+
+    private void showWateringWarning(PlantViewHolder holder) {
+        holder.tvLastWatered.setText("Gießen");
+        holder.ivWaterIcon.setImageResource(R.drawable.ic_warning);
+        holder.tvLastWatered.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+    }
+
+    private int parseWateringIntervalInDays(String frequency) {
+        if (frequency == null) {
+            Log.w("PlantAdapter", "Watering frequency is null for a plant");
+            return -1;
+        }
+
+        frequency = frequency.toLowerCase();
+
+        if (frequency.contains("täglich")) return 1;
+        if (frequency.contains("alle 2 tage")) return 2;
+        if (frequency.contains("alle 3 tage")) return 3;
+        if (frequency.contains("1× pro woche")) return 7;
+        if (frequency.contains("2× pro woche")) return 3;
+        if (frequency.contains("alle 2 wochen")) return 14;
+        if (frequency.contains("2× pro monat")) return 15;
+        if (frequency.contains("1× im monat")) return 30;
+
+        return -1;
     }
 
     private void showPopupMenu(View anchor, Plant plant, int position) {
@@ -125,8 +159,11 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
                             }
 
                             // Remove plant
-                            plantList.remove(position);
-                            notifyItemRemoved(position);
+                            int index = plantList.indexOf(plant);
+                            if (index != -1) {
+                                plantList.remove(index);
+                                notifyItemRemoved(index);
+                            }
 
                             // Save updated list
                             PlantStorage.savePlants(context, plantList);
@@ -180,8 +217,10 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantViewHol
         );
 
         datePicker.setTitle("Wann wurde die Pflanze gegossen?");
+        datePicker.getDatePicker().setMaxDate(System.currentTimeMillis()); // forbid future
         datePicker.show();
     }
+
 
 
     @Override

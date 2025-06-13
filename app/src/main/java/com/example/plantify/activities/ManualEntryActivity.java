@@ -1,8 +1,10 @@
 package com.example.plantify.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,8 +14,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.example.plantify.R;
+import com.example.plantify.helpers.FileHelper;
 import com.example.plantify.models.Plant;
 import com.example.plantify.persistance.PlantStorage;
 
@@ -37,7 +41,11 @@ import java.util.List;
 public class ManualEntryActivity extends AppCompatActivity {
     private Spinner spinnerFreq;
     private EditText etName, etLocation;
+    private static final int REQUEST_GALLERY = 1;
+    private static final int REQUEST_CAMERA = 2;
     private Uri selectedImageUri;
+    private Uri cameraImageUri;
+    private ImageView ivPreview;
 
 
     @Override
@@ -49,9 +57,9 @@ public class ManualEntryActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etLocation = findViewById(R.id.etLocation);
         spinnerFreq = findViewById(R.id.spinnerFreq);
+        ivPreview = findViewById(R.id.ivPreview);
         Button btnChooseImage = findViewById(R.id.btnChooseImage);
         Button btnSave = findViewById(R.id.btnSave);
-        ImageView ivPreview = findViewById(R.id.ivPreview);
 
         String[] freqs = { "täglich", "1× pro Woche", "2× pro Monat" };
         spinnerFreq.setAdapter(new ArrayAdapter<>(this,
@@ -59,14 +67,19 @@ public class ManualEntryActivity extends AppCompatActivity {
 
         ivPreview.setImageResource(R.drawable.ic_placeholder);
 
-        btnChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1); // request code = 1
-            }
+        btnChooseImage.setOnClickListener(v -> {
+            String[] options = {"Foto aufnehmen", "Aus Galerie wählen"};
+            new AlertDialog.Builder(this)
+                    .setTitle("Bild auswählen")
+                    .setItems(options, (dialog, which) -> {
+                        if (which == 0) {
+                            openCamera();
+                        } else {
+                            openGallery();
+                        }
+                    }).show();
         });
+
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,34 +115,36 @@ public class ManualEntryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+        if (resultCode != RESULT_OK) return;
+
+        Uri imageUri = null;
+
+        if (requestCode == REQUEST_GALLERY && data != null) {
             Uri sourceUri = data.getData();
-
-            try {
-                // Create a new file in internal storage
-                File destFile = new File(getFilesDir(), System.currentTimeMillis() + "_plant.jpg");
-                try (InputStream in = getContentResolver().openInputStream(sourceUri);
-                     OutputStream out = new FileOutputStream(destFile)) {
-
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    while ((bytesRead = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, bytesRead);
-                    }
-                }
-
-                // Save the absolute path for later
-                selectedImageUri = Uri.fromFile(destFile);
-
-                // Optional: preview
-                ImageView ivPreview = findViewById(R.id.ivPreview);
-                ivPreview.setImageURI(selectedImageUri);
-
-            } catch (IOException e) {
-                Toast.makeText(this, "Fehler beim Speichern des Bildes", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
+            imageUri = FileHelper.copyToInternalStorage(this, sourceUri);
+        } else if (requestCode == REQUEST_CAMERA) {
+            imageUri = FileHelper.copyToInternalStorage(this, cameraImageUri);
         }
+
+        if (imageUri != null) {
+            selectedImageUri = imageUri;
+            ivPreview.setImageURI(selectedImageUri);
+        }
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_GALLERY);
+    }
+
+    private void openCamera() {
+        File imageFile = new File(getFilesDir(), System.currentTimeMillis() + "_camera.jpg");
+        cameraImageUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", imageFile);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
+        startActivityForResult(intent, REQUEST_CAMERA);
     }
 
 
